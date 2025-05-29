@@ -3,6 +3,5 @@ export default{
     white:'#ffffff',
     black:'#000',
     grey:'#F2F3F6',
-    greyText:'grey',
-    green:'green'
+    greyText:'grey'
 }

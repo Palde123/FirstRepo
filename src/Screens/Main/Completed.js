@@ -1,10 +1,13 @@
-import { StyleSheet, Text, View,FlatList ,TouchableOpacity,Image} from 'react-native'
+import { StyleSheet, Text, View,FlatList ,TouchableOpacity,Image,Alert} from 'react-native'
 import React from 'react'
 import Color from '../../Assets/Color'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import Icon from '../../Assets/Icons/Icon'
 import responsive from '../../Helper.js/Responsive'
+import { deleteTask } from '../../Redux/taskSlice'
 export default function Completed() {
+  
+ const dispatch = useDispatch();
   const tasks = useSelector(state =>state.tasks.taskList);
   const completedTasks = tasks.filter(t => t.Completed);
 
@@ -15,6 +18,24 @@ export default function Completed() {
 
   const formattedDate = `${day}-${month}-${year}`;
 
+   const handleDelete = (id) => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => dispatch(deleteTask(id)),
+          style: "destructive"
+        }
+      ],
+      { cancelable: true }
+    );
+  };
    const renderItem =({item})=>(
       <View style={styles.listContainer}>
           <View>
@@ -35,10 +56,7 @@ export default function Completed() {
           <View style={{
               flexDirection:'row'
           }}>
-              <TouchableOpacity>
-                  <Image source={Icon.Edit} style={styles.Edit}/>
-              </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleDelete(item.id)}>
                   <Image source={Icon.Trash} style={styles.trash}/>
               </TouchableOpacity>
           </View>
