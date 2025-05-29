@@ -5,8 +5,11 @@ import { useState } from 'react'
 import responsive from '../../Helper.js/Responsive';
 import { Picker } from '@react-native-picker/picker';
 import Icon from '../../Assets/Icons/Icon';
-
+import { useDispatch,useSelector } from 'react-redux';
+import { addTask,markASCompleted } from '../../Redux/taskSlice';
 export default function Pending() {
+  const dispatch = useDispatch();
+  const tasks = useSelector(state => state.tasks.taskList);
  const [modalVisible, setModalVisible] = useState(false);
  const [selectedCategory, setSelectedCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -21,24 +24,36 @@ export default function Pending() {
   const formattedDate = `${day}-${month}-${year}`;
 
   const handleSubmit = () => {
-    console.log('Description:', selectedCategory);
     
-    const newService = {id: task.length + 1, title, description,selectedCategory};
-    setTask([...task, newService]);
+    const newService = {id: Date.now().toString(), title, description,selectedCategory};
+    dispatch(addTask(newService))
     setModalVisible(false);
     setTitle('');
     setDescription('');
     setSelectedCategory('');
   };
-
+  const handelComplete = (id) =>{
+    dispatch(markASCompleted(id));
+  }
  const renderItem =({item})=>(
     <View style={styles.listContainer}>
         <View>
         <Text style={styles.titleText}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
         <Text style={styles.selectedCategory}>{item.selectedCategory}</Text>
+        <View style={{
+          flexDirection:'row',
+          justifyContent:'space-between'
+        }}>
         <Text style={styles.selectedCategory}>Date:{formattedDate}</Text>
+        <TouchableOpacity onPress={()=>
+          handelComplete(item.id)
+        }>
+        <Text style={styles.Completed}>Mark as Completed</Text>
+        </TouchableOpacity>
         </View>
+        </View>
+    
         <View style={{
             flexDirection:'row'
         }}>
@@ -46,23 +61,26 @@ export default function Pending() {
                 <Image source={Icon.Edit} style={styles.Edit}/>
             </TouchableOpacity>
             <TouchableOpacity>
-                <Image source={Icon.Trash}/>
+                <Image source={Icon.Trash} style={styles.trash}/>
             </TouchableOpacity>
         </View>
+       
     </View>
+    
  )
 
   return (
     <View style={styles.main}>
-        <View>
+        <View style={{marginTop:40}}>
         <FlatList
         bounces={false}
-        data={task}
+        data={tasks.filter(t => !t.Completed)}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
+        contentContainerStyle={{ paddingBottom: 100 }}
         />
 
-        </View>
+        
       <View>
         <TouchableOpacity style={styles.add} onPress={() => setModalVisible(true)}>
             <Text style={styles.addButton}>+</Text>
@@ -121,6 +139,7 @@ export default function Pending() {
       </View>
     </Modal>
     </View>
+    </View>
   )
 }
 
@@ -131,7 +150,7 @@ const styles = StyleSheet.create({
         },
         listContainer:{
             //borderWidth:1,
-            marginTop:80,
+            marginTop:20,
             marginHorizontal:20,
             padding:14,
             borderRadius:8,
@@ -161,14 +180,26 @@ const styles = StyleSheet.create({
         },
         Edit:{
             resizeMode:'contain',
-            height:22,
+            height:24,
             width:40
+        },
+        trash:{
+          resizeMode:'contain',
+            height:24,
+            width:18
+        },
+        Completed:{
+          fontSize:responsive.fontSize(15),
+          margin:5,
+          color:Color.greyText,
+          fontWeight:'bold',
+          left:55
         },
 
     add:{
         //borderWidth:1,
        position:'absolute',
-       marginTop:responsive.height(400),
+       marginTop:responsive.height(200),
        left:responsive.width(300),
        width:responsive.width(70),
        height:responsive.height(70),
