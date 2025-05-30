@@ -15,10 +15,9 @@ const Stack = createNativeStackNavigator();
         }}
         />
         <Stack.Screen name='Search' component={Search}
-        options={{
+          options={{
             headerShown:false,
-        }}
-        />
+        }}/>
     </Stack.Navigator>
    </NavigationContainer>
   )

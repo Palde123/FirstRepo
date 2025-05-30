@@ -18,55 +18,25 @@ import responsive from '../../Helper.js/Responsive';
 import { useNavigation } from '@react-navigation/native';
 export default function Dashboard() {
   const navigation = useNavigation();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [tempSearch, setTempSearch] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
   const Tab = createMaterialTopTabNavigator();
-  const handleSearch = () => {
-    setSearchQuery(tempSearch);
-    setModalVisible(false);
-  };
+  
   return (
     <>
       <View style={styles.main}>
         <View style={styles.Header}>
+          <TouchableOpacity style={styles.ImageComponent}>
+                      <Image source={Icon.Filter} style={styles.Image2}/>
+                    </TouchableOpacity>
           <Text style={styles.headerText}>To-Do Daily</Text>
           <TouchableOpacity
             style={styles.Search}
             onPress={() => {
               navigation.navigate('Search')
             }}>
-            <Image source={Icon.Search} />
+            <Image source={Icon.Search} style={styles.Image}/>
           </TouchableOpacity>
         </View>
       </View>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.title}>Search Task</Text>
-            <View style={styles.descriptionconatiner}>
-              <TextInput
-                style={styles.input}
-                placeholder="Type to search..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                style={styles.cancelButton}>
-                <Text style={styles.Text1}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleSearch(searchQuery)}
-                style={styles.submitButton}>
-                <Text style={styles.Text}>Search</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
 
       <Tab.Navigator
         screenOptions={{
@@ -85,7 +55,7 @@ const styles = StyleSheet.create({
   Header: {
     marginTop: responsive.margin(55),
     //alignItems:'center',
-    marginLeft: responsive.margin(100),
+    //marginLeft: responsive.margin(30),
     marginBottom: responsive.margin(3),
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -99,6 +69,20 @@ const styles = StyleSheet.create({
     // position:'static',
     textAlign: 'center',
     color: Color.white,
+  },
+  Image:{
+    resizeMode:'contain',
+    height:24,
+    width:40,  
+  },
+  Image2:{
+    resizeMode:'contain',
+    height:24,
+    width:40,  
+    tintColor:Color.white,
+  },
+  ImageComponent:{
+    right:20,
   },
   Search: {
     left: responsive.margin(30),
@@ -122,55 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
     height: 4,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    width: 400,
-    //height: 300,
-    flex: 0.8,
-    backgroundColor: Color.white,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-
- title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 20,
-  },
-  descriptionconatiner: {
-    padding: 20,
-    width: '100%',
-  },
-  input: {
-    width: '100%',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 20,
-  },
-  cancelButton: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#ccc',
-  },
-  submitButton: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: Color.primaryColor,
-  },
-  Text: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+  
   Text1: {
     fontWeight: 'bold',
   },

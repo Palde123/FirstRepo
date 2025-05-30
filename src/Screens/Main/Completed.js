@@ -4,7 +4,7 @@ import Color from '../../Assets/Color'
 import { useSelector,useDispatch } from 'react-redux'
 import Icon from '../../Assets/Icons/Icon'
 import responsive from '../../Helper.js/Responsive'
-import { deleteTask } from '../../Redux/taskSlice'
+import { revertTask } from '../../Redux/taskSlice'
 export default function Completed() {
   
  const dispatch = useDispatch();
@@ -18,24 +18,25 @@ export default function Completed() {
 
   const formattedDate = `${day}-${month}-${year}`;
 
-   const handleDelete = (id) => {
+  const handleRevert = (id) => {
     Alert.alert(
-      "Delete Task",
-      "Are you sure you want to delete this task?",
+      "Revert Task",
+      "Are you sure you want to mark this task as pending again?",
       [
         {
           text: "Cancel",
           style: "cancel"
         },
         {
-          text: "Delete",
-          onPress: () => dispatch(deleteTask(id)),
-          style: "destructive"
+          text: "Revert",
+          onPress: () => dispatch(revertTask(id)),
+          style: "default"
         }
       ],
       { cancelable: true }
     );
   };
+  
    const renderItem =({item})=>(
       <View style={styles.listContainer}>
           <View>
@@ -56,8 +57,8 @@ export default function Completed() {
           <View style={{
               flexDirection:'row'
           }}>
-              <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                  <Image source={Icon.Trash} style={styles.trash}/>
+              <TouchableOpacity onPress={() => handleRevert(item.id)}>
+                  <Image source={Icon.revert} style={styles.trash}/>
               </TouchableOpacity>
           </View>
          
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
       marginHorizontal:20,
       padding:14,
       borderRadius:8,
-      backgroundColor:Color.grey,
+      backgroundColor: Color.greenBackground,
       flexDirection:'row',
       justifyContent:'space-between'
       
@@ -129,6 +130,6 @@ const styles = StyleSheet.create({
     margin:5,
     color:Color.green,
     fontWeight:'bold',
-    left:115
+    left:130
   },
 })

@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Alert,
+  ImageComponent,
 } from 'react-native';
 import React, {useState} from 'react';
 import Color from '../../Assets/Color';
@@ -130,6 +131,7 @@ export default function Pending() {
   return (
     <View style={styles.main}>
       <View style={{marginTop: 40}}>
+        
         <FlatList
           bounces={false}
           data={tasks.filter(t => !t.Completed)}
@@ -208,6 +210,14 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
     flex: 1,
   },
+  ImageComponent:{
+    marginHorizontal:10,
+  },
+  Image:{
+    resizeMode:'contain',
+    height:24,
+    width:40,
+  },
   listContainer: {
     //borderWidth:1,
     marginTop: 20,
@@ -249,15 +259,15 @@ const styles = StyleSheet.create({
   Completed: {
     fontSize: responsive.fontSize(15),
     margin: 5,
-    color: Color.greyText,
+    color: Color.primaryColor,
     fontWeight: 'bold',
-    left: 55,
+    left: 60,
   },
 
   add: {
   position: 'absolute',
-  bottom: responsive.height(80),  // 20 pixels from the bottom
-  right: responsive.width(20),   // 20 pixels from the right
+  bottom: responsive.height(80),  
+  right: responsive.width(20),   
   width: responsive.width(70),
   height: responsive.height(70),
   borderRadius: responsive.height(60),
@@ -311,7 +321,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Color.borderColor,
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -323,7 +333,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Color.borderColor,
     borderRadius: 5,
     marginBottom: 15,
   },
@@ -332,7 +342,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cancelButton: {
-    backgroundColor: '#ccc',
+    backgroundColor: Color.tintColor,
     padding: 10,
     borderRadius: 5,
     flex: 1,

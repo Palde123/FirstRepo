@@ -34,8 +34,15 @@ const taskSlice = createSlice({
       const idToDelete = action.payload;
       state.taskList = state.taskList.filter(task => task.id !== idToDelete);
     },
+    revertTask: (state, action) => {
+      const index = state.taskList.findIndex(t => t.id === action.payload);
+      if (index !== -1) {
+        state.taskList[index].Completed = false;
+      }
+    }
+    
   },
 });
 
-export const {addTask, markASCompleted, editTask, deleteTask} = taskSlice.actions;
+export const {addTask, markASCompleted, editTask, deleteTask,revertTask} = taskSlice.actions;
 export default taskSlice.reducer;
